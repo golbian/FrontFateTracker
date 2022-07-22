@@ -1,0 +1,164 @@
+<h1>New character</h1>
+<div class="container-flex">
+  <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+    <div id="character_form">
+      <mat-form-field appearance="standard">
+        <mat-label>Name</mat-label>
+        <input
+          matInput
+          maxlength="15"
+          inputmode="text"
+          placeholder="Yasuo"
+          formControlName="name"
+          #nameInput
+        />
+        <mat-hint>4 letters required: {{ nameInput.value.length }}/4</mat-hint>
+        <mat-error>Name is required</mat-error>
+      </mat-form-field>
+      <br />
+      <mat-form-field appearance="standard">
+        <mat-label>Avatar url</mat-label>
+        <input
+          matInput
+          minlength="0"
+          inputmode="url"
+          placeholder="Avatar url"
+          formControlName="avatar"
+          #avatarInput
+        />
+      </mat-form-field>
+      <br />
+      <mat-form-field appearance="standard">
+        <mat-label>HP</mat-label>
+        <input
+          matInput
+          maxlength="5"
+          inputmode="number"
+          placeholder="Ex: 50"
+          formControlName="hp"
+          #hpInput
+        />
+        <mat-hint>HP > 5 {{ nameInput.value }}</mat-hint>
+        <mat-error>HP is required</mat-error>
+      </mat-form-field>
+      <br />
+      <mat-form-field appearance="standard">
+        <mat-label>Prana</mat-label>
+        <input
+          matInput
+          minlength="0"
+          inputmode="number"
+          placeholder="Ex: 50"
+          formControlName="prana"
+          #pranaInput
+        />
+        <mat-hint>Prana > 0 : {{ pranaInput.value }}</mat-hint>
+        <mat-error>Prana is required</mat-error>
+      </mat-form-field>
+      <br />
+      <mat-form-field appearance="standard">
+        <mat-label>Point d'action</mat-label>
+        <input
+          matInput
+          minlength="0"
+          inputmode="number"
+          placeholder="Ex: 20"
+          formControlName="pa"
+          #paInput
+        />
+        <mat-hint>PA < 20 : {{ paInput.value }}</mat-hint>
+        <mat-error>PA is required</mat-error>
+      </mat-form-field>
+      <br />
+      <div id="isServant">
+        <mat-checkbox matInput formControlName="isServant"
+          >IsServant</mat-checkbox
+        >
+      </div>
+    </div>
+    <br />
+
+    <mat-accordion multi>
+      <mat-expansion-panel *ngFor="let spell of spells ; let i = index" [attr.data-index]="i" >
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <img id="spell_icon" src="../../../assets/wand.png" />
+            &nbsp;&nbsp;&nbsp;
+            {{ spell.name }}
+          </mat-panel-title>
+          <mat-panel-description>
+            Complete your spell form
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Spell name</mat-label>
+          <input matInput [ngModelOptions]="{standalone: true}" [(ngModel)]="spell.name" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Cooldown</mat-label>
+          <input matInput [ngModelOptions]="{standalone: true}" [(ngModel)]="spell.cooldown" type="number" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>PA</mat-label>
+          <input
+            matInput
+            [ngModelOptions]="{standalone: true}" [(ngModel)]="spell.pa"
+            type="number"
+            min="1"
+            max="20"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Prana</mat-label>
+          <input matInput [ngModelOptions]="{standalone: true}" [(ngModel)]="spell.prana" type="number" min="1"/>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Effect</mat-label>
+          <mat-select [ngModelOptions]="{standalone: true}" [(ngModel)]="spell.effect">
+            <mat-option *ngFor="let effect of effects" [value]="effect">{{
+              effect
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div>
+          <mat-checkbox matInput [ngModelOptions]="{standalone: true}" [(ngModel)]="spell.passive"
+            >Passive</mat-checkbox
+          >
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <div class="action_container">
+      <div mat-dialog-actions align="end">
+        <button mat-raised-button color="primary" (click)="onReset()">
+          Annuler
+        </button>
+      </div>
+      <div >
+        <button
+          id="add_spell"
+          mat-raised-button
+          color="primary"
+          type="button"
+          (click)="addSpell()"
+        >
+          Add Spell +
+        </button>
+      </div>
+      <div mat-dialog-actions align="end">
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="!form.valid"
+        >
+          Valider
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

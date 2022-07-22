@@ -1,0 +1,59 @@
+<mat-grid-list id="container" [cols]="breakpoint" [rowHeight]="rowHeight">
+  <mat-grid-tile *ngFor="let character of characters; let o = index">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>{{ character.name }}</mat-card-title>
+        <div class="subtitle_container"></div>
+        <mat-card-subtitle>Hp : {{ character.hp }}</mat-card-subtitle>
+        <mat-card-subtitle>PA : {{ character.pa }}</mat-card-subtitle>
+        <mat-card-subtitle>Prana : {{ character.prana }}</mat-card-subtitle>
+      </mat-card-header>
+      <img
+        *ngIf="character.avatar"
+        mat-card-image
+        [src]="character.avatar"
+        alt="avatar"
+      />
+      <mat-card-content>
+        <mat-tab-group 
+        [selectedIndex]="selectedTabs[o]"
+        >
+          <div *ngFor="let spell of character.spells; let i = index">
+            <mat-tab [label]="spell.name" *ngIf="4 > i">
+              <mat-grid-list id="spell_grid" cols="2" rowHeight="6:1">
+                <mat-grid-tile>Damage : {{ spell.damage || 0 }}</mat-grid-tile>
+                <mat-grid-tile>Cooldown : {{ spell.cooldown }}</mat-grid-tile>
+                <mat-grid-tile>Prana cost : {{ spell.prana }}</mat-grid-tile>
+                <mat-grid-tile>PA cost : {{ spell.pa }}</mat-grid-tile>
+                <mat-grid-tile>Effect : {{ spell.effect }}</mat-grid-tile>
+                <mat-grid-tile *ngIf="spell.passive">Passive</mat-grid-tile>
+                <mat-grid-tile *ngIf="!spell.passive">Active</mat-grid-tile>
+              </mat-grid-list>
+              <button mat-button (click)="selectedTabs[o] = i - 1" class="spell_btn previous"><mat-icon>keyboard_arrow_left</mat-icon></button>
+              <button mat-button (click)="selectedTabs[o] = i + 1" class="spell_btn next"><mat-icon>keyboard_arrow_right</mat-icon></button>
+            </mat-tab>
+          </div>
+        </mat-tab-group>
+      </mat-card-content>
+      <mat-card-footer>
+        <button mat-button>
+          <mat-icon
+            [routerLink]="['/character', character._id]"
+            aria-hidden="false"
+            aria-label="edit"
+            >edit</mat-icon
+          >
+        </button>
+        <div class="spacer"></div>
+        <button mat-button>
+          <mat-icon
+            aria-hidden="false"
+            aria-label="delete"
+            (click)="delete(character)"
+            >delete</mat-icon
+          >
+        </button>
+      </mat-card-footer>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>
